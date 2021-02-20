@@ -25,7 +25,8 @@ def api_send_multi():
     message = txt.read().decode('utf-8')
     print(message)
 
-    data = request.form.to_dict()
+    # flat=False return list of all, else return first value
+    data = request.form.to_dict(flat=False)
     print(data)
     return jsonify(app.config["global_OK"])
 
