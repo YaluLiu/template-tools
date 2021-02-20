@@ -2,6 +2,7 @@ import requests
 import numpy as np 
 import cv2
 import json
+import os
 
 class Client():
     def __init__(self,host,port):
@@ -22,11 +23,20 @@ class Client():
         requests.post(self.api_json,json=data)
     
     # if send file and json in the same, only by this way
-    def send_multi(self):
+    def send_simple_json(self):
         local_file_to_send = "../../../data/log.txt"
         info = {"name":"moon","age":16}
         files = {'document': open(local_file_to_send, 'rb')}
         requests.post(self.api_multi,files=files,data=info)
+    
+    def send_list_json(self):
+        local_file_to_send = "../../../data/log.txt"
+        local_json_to_send = "../../../data/test.json"
+        with open(local_json_to_send) as json_file:
+            info = json.load(json_file)
+        files = {'document': open(local_file_to_send, 'rb')}
+        # requests.post(self.api_multi,files=files,data=info)
+        requests.post(self.api_multi,files=files,data={"result":json.dumps(info)})
 
 if __name__ == "__main__":
     host = 'localhost'
@@ -34,4 +44,5 @@ if __name__ == "__main__":
     client = Client(host,port)
     client.send_json()
     client.send_cv_image()
-    client.send_multi()
+    client.send_simple_json()
+    client.send_list_json()

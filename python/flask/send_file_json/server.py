@@ -26,9 +26,11 @@ def api_send_multi():
     print(message)
 
     # flat=False return list of all, else return first value
-    data = request.form.to_dict(flat=False)
-    print(data)
+    data = request.form.to_dict()['result']
+    x = json.loads(data)
+    print(json.dumps(x,indent=4))
+
     return jsonify(app.config["global_OK"])
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=6666,threaded=True)
+    app.run(debug=True, host='0.0.0.0', port=6666,threaded=True)
